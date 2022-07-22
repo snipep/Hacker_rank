@@ -1,0 +1,160 @@
+from multiprocessing.sharedctypes import Value
+from operator import le, length_hint
+from re import M
+
+
+class Node:
+    def __init__(self,value):
+        self.value=value
+        self.next=None
+        self.prev=None
+
+class DoubleList:
+    def __init__(self,value):
+        new_node=Node(value)
+        self.head=new_node
+        self.tail=new_node
+        self.length=1
+    
+    def append(self,value):
+        new_node=Node(value)
+        if self.length==0:
+            self.head=new_node
+            self.tail=new_node
+        else:
+            self.tail.next=new_node
+            new_node.prev=self.tail
+            self.tail=new_node
+        self.length+=1
+    
+    def pop(self):
+        if self.length==0:
+            return None
+        temp=self.tail
+        if self.length==1:
+            self.head=None
+            self.tail=None       
+        self.tail=self.tail.prev
+        temp.prev=None
+        temp.next=None
+        self.length-=1
+        return temp.value
+
+    def prepend(self,value):
+        new_node=Node(value)
+        if self.length == 0:
+            self.head=new_node
+            self.tail=new_node
+        temp=self.head
+        self.head=new_node
+        new_node.next=temp
+        temp.prev=new_node
+        self.length+=1
+        return True
+
+
+    def printlist(self):
+        temp=self.head
+        while temp is not None:
+            print(temp.value)
+            temp=temp.next
+
+    def popfisrt(self):
+        if self.length==0:
+            return None
+        temp=self.head
+        if self.length==1:
+            self.head=None
+            self.tail=None
+        else:
+            self.head=self.head.next
+            self.head.prev=None
+            temp.next=None
+        self.length-=1
+        return temp
+
+    def get(self,index):
+        if index<0 or index>=self.length:
+            return None
+        temp=self.head
+        if index < self.length/2:
+            for _ in range(index):
+                temp=temp.next
+        else:
+            temp=self.tail
+            for _ in range(self.length-1,index,-1):
+                temp= temp.prev
+        return temp
+        
+    def set(self,index,value):
+        temp=self.get(index)
+        if temp is not None:
+            temp.value=value
+            return True
+        else:
+            return False
+    
+    def insert(self,index,value):
+        new_node=Node(value)
+        if index<0 or index>self.length:
+            return False
+        if index==0:
+            return self.prepend(value)
+        if index==self.length:
+            return self.append(value)
+
+        temp=self.get(index)
+        pre=temp.prev
+        new_node.next=pre.next
+        pre.next=new_node
+        new_node.prev=temp.prev
+        temp.prev=new_node
+        self.length+=1
+        return True
+
+    def remove(self,index):
+        if index==0:
+            return self.popfisrt()
+        if index==self.length:
+            return self.pop()
+        else:
+            temp=self.get(index)
+            pre=temp.prev
+            pro=temp.next
+            pre.next=temp.next
+            pro.prev=pre
+            temp.prev=None
+            temp.next=None
+        self.length-=1
+        return temp
+
+
+
+
+
+
+
+My_List=DoubleList(10)
+My_List.append(9)
+My_List.append(8)
+My_List.printlist()
+# My_List.pop()
+# print("\n")
+# My_List.printlist()
+print("\nafter prepend list")
+My_List.prepend(1)
+My_List.printlist()
+print("\nafter pop list")
+My_List.popfisrt()
+My_List.printlist()
+print("\n")
+print(My_List.get(2))
+print("\n")
+My_List.set(1,11)
+My_List.printlist()
+print("\n")
+My_List.insert(1,9)
+My_List.printlist()
+print("\n")
+My_List.remove(2)
+My_List.printlist()
