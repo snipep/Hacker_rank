@@ -1,0 +1,42 @@
+import math
+import os
+import random
+import re
+import sys
+
+def sockMerchant(n, ar):
+    m=0
+    l=[]
+    ar.sort()   
+    print(ar)
+    l.append(ar[0])
+    for i in range(0,n-1):
+        if ar[i]==ar[i+1]:
+            i+=1
+        else:
+            l.append(ar[i+1])
+    print(l)
+    print(len(l))
+    for i in range(len(l)):    
+        if ar.count(l[i]) == 1:
+            m+=0
+        if ar.count(l[i]) == 2:
+            m+=1
+        else:
+            m+=int(ar.count(l[i])/2)
+    
+    return int(m)
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    n = int(input().strip())
+
+    ar = list(map(int, input().rstrip().split()))
+
+    result = sockMerchant(n, ar)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
