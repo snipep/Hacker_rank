@@ -1,0 +1,63 @@
+import math
+import os
+import random
+import re
+import sys
+
+def Log2(x):
+    return (math.log10(x) / math.log10(2));
+
+def isPowerOfTwo(n):
+    return (math.ceil(Log2(n)) == math.floor(Log2(n)));
+
+def move1(n):
+    i=0
+    while(True):
+        if n < 2**i:
+            h=2**(i-1)
+            break    
+        else:
+            i+=1
+    d=n-h
+    return d
+    
+def move2(n):
+    n=int(n/2)
+    return n
+    
+def Counter_Game(n):
+    j=0
+    while(True):
+        x=isPowerOfTwo(n)
+        if n != 1:
+            if x is True:
+                n=move2(n)
+                j+=1
+                # print("move2")
+            else:
+                n=move1(n)
+                j+=1
+                # print("move1")
+                
+        else:
+            break
+    
+    if j % 2 == 0:
+        return "Richard"
+    else:
+        return "Louise"
+
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        n = int(input().strip())
+
+        result = Counter_Game(n)
+
+        fptr.write(result + '\n')
+
+    fptr.close()
