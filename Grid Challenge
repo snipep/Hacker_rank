@@ -1,0 +1,50 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+def order_join(grid):
+    m=[]
+    for i in grid:
+        w = ''.join(sorted(i))
+        m.append(w)
+
+    return(m)
+
+
+def gridChallenge(grid):
+    j=0
+    Alphabet = [chr(x) for x in range(ord('a'), ord('z') + 1)]
+    n=len(grid)
+    grid = "".join(order_join(grid))
+    k=len(grid)
+    for i in range(len(grid)-n):
+        if Alphabet.index(grid[i]) <= Alphabet.index(grid[i+n]):
+            j+=1
+    if j == k-n:
+        return "YES"
+    else:
+        return "NO"
+    
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        n = int(input().strip())
+
+        grid = []
+
+        for _ in range(n):
+            grid_item = input()
+            grid.append(grid_item)
+
+        result = gridChallenge(grid)
+
+        fptr.write(result + '\n')
+
+    fptr.close()
