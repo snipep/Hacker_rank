@@ -1,0 +1,21 @@
+import math
+import os
+import random
+import re
+import sys
+
+def superDigit(n,k):
+    m=0
+    for i in n:
+        j=int(i)
+        m+=(j*k)
+    if m>9:
+        superDigit(str(m),1)
+    else:
+        print(m)
+    
+first_multiple_input = input().rstrip().split()
+n = first_multiple_input[0]
+k = int(first_multiple_input[1])
+superDigit(n,k)
+        
